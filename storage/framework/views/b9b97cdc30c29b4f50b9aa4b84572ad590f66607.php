@@ -1,0 +1,88 @@
+
+<?php echo $__env->make('header', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 sidebar-container">
+            
+            <?php echo $__env->make('admin.parts.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+        </div>
+        <div class="col-md-9 p-0">
+            <div class="container-fluid p-4" style="min-height: 100vh;">
+                <h1 class="text-center p-4">
+                    Update Member Progress 
+                </h1>
+                
+    
+                <div class="status">
+                    
+                    <?php if($errors->any): ?>
+                        <div class="row">
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="col-6">
+                                <div class="alert alert-danger">
+                                    <?php echo e($error); ?>
+
+                                </div>
+                            </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?></div>                        
+                    <?php endif; ?>
+                    <?php if(session("success")): ?>
+                        <div class="alert alert-success p-1 m-1">
+                            <?php echo e(session("success")); ?>
+
+                        </div>
+                        
+                    <?php endif; ?>
+                    <form action="/admin/update-progress" method="post">
+                        <?php echo csrf_field(); ?>
+                        
+                        <div class="row">
+                            <div class="col-6">
+
+                                
+                                <input type="hidden" name="id" value="<?php echo e($member->id); ?>">
+                                
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="name">Member's Name</label>
+                                    <input type="text" id="name" name="name" value="<?php echo e($member->name); ?>" placeholder="Full Name" class="d-block w-100 p-2" disabled>
+                                </div>
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="service">Service Taken</label>
+                                    <input type="text" id="service" name="service" value="<?php echo e($member->services); ?>"class="d-block w-100 p-2" disabled>
+                                </div>
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="ini_weight">Initial Weight: (KG)</label>
+                                    <input type="number" id="ini_weight" name="ini_weight" value="<?php echo e($member->ini_weight); ?>" placeholder="Initial Weight" autocomplete="off" class="d-block w-100 p-2" required>
+                                </div>
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="curr_weight">Current Weight: (KG)</label>
+                                    <input type="number" id="curr_weight" name="curr_weight" value="<?php echo e($member->curr_weight); ?>" placeholder="Current Weight" autocomplete="off" class="d-block w-100 p-2" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-6">
+
+                                
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="ini_body_type">Initial Body Type:</label>
+                                    <input type="text"  name="ini_body_type" value="<?php echo e($member->ini_body_type); ?>" placeholder="Initial Body Type:" class="d-block w-100 p-2" required>
+                                </div>
+                                <div class="p-2 ">
+                                    <label class="pb-2" for="curr_body_type">Current Body Type:</label>
+                                    <input type="text"  name="curr_body_type" value="<?php echo e($member->curr_body_type); ?>" placeholder="Current Body Type:" class="d-block w-100 p-2" required>
+                                </div>
+
+                                
+
+                            </div>
+                        </div>
+                        
+                        <input type="submit" value="Update Member Progress" class="btn btn-success d-block w-100 p-2 mt-2">
+                    </form>
+                </div>
+                  
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $__env->make("footer", \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Asus\Desktop\gym-system-main\resources\views/memberProgress.blade.php ENDPATH**/ ?>
