@@ -26,10 +26,10 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Configurar permisos para .htaccess
-RUN echo '<Directory /var/www/html/public>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
+RUN echo '<Directory /var/www/html/public>\
+    Options Indexes FollowSymLinks\
+    AllowOverride All\
+    Require all granted\
 </Directory>' >> /etc/apache2/apache2.conf
 
 # Instalar Composer
@@ -48,24 +48,19 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
 
-# Crear script de inicio personalizado
-RUN echo '#!/bin/bash\n\
-set -e\n\
-echo "=== Starting Application === "\n\
-echo "Running migrations..."\n\
-php artisan migrate --force\n\
-echo "Running seeders..."\n\
-php artisan db:seed --force\n\
-echo "Optimizing..."\n\
-php artisan config:cache\n\
-php artisan route:cache\n\
-php artisan view:cache\n\
-echo "Starting Apache..."\n\
-exec apache2-foreground\n\
-' > /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
+# Crear script de inicio simple
+RUN echo '#!/bin/bash' > /usr/local/bin/start.sh
+RUN echo 'set -e' >> /usr/local/bin/start.sh
+RUN echo 'php artisan migrate --force' >> /usr/local/bin/start.sh
+RUN echo 'php artisan db:seed --force' >> /usr/local/bin/start.sh
+RUN echo 'php artisan config:cache' >> /usr/local/bin/start.sh
+RUN echo 'php artisan route:cache' >> /usr/local/bin/start.sh
+RUN echo 'php artisan view:cache' >> /usr/local/bin/start.sh
+RUN echo 'exec apache2-foreground' >> /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
 
 # Puerto expuesto
 EXPOSE 80
 
-# Comando de inicio modificado
+# Comando de inicio
 CMD ["/usr/local/bin/start.sh"]

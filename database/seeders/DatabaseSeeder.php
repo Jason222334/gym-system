@@ -10,26 +10,36 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        // Crear usuario administrador
-        User::create([
-            'username' => 'admin',
-            'password' => Hash::make('admin123'),
-            'full_name' => 'Administrator',
-            'role' => 'admin',
-            'gender' => 'male', // agregar si es necesario
-            'address' => 'Gym Address',
-            'contact' => '123456789'
-        ]);
+        // Crear usuario administrador solo si no existe
+        if (!User::where('username', 'admin')->exists()) {
+            User::create([
+                'username' => 'admin',
+                'password' => Hash::make('admin123'),
+                'full_name' => 'Administrator',
+                'role' => 'admin',
+                'gender' => 'male',
+                'address' => 'Gym Address',
+                'contact' => '123456789'
+            ]);
+            echo "Admin user created\n";
+        } else {
+            echo "Admin user already exists\n";
+        }
 
-        // Crear usuario regular
-        User::create([
-            'username' => 'ahmednasser',
-            'password' => Hash::make('password123'),
-            'full_name' => 'Ahmed Nasser',
-            'role' => 'admin', // o 'user' dependiendo del acceso
-            'gender' => 'male',
-            'address' => 'Cairo, Egypt',
-            'contact' => '987654321'
-        ]);
+        // Crear usuario regular solo si no existe
+        if (!User::where('username', 'ahmednasser')->exists()) {
+            User::create([
+                'username' => 'ahmednasser',
+                'password' => Hash::make('password123'),
+                'full_name' => 'Ahmed Nasser',
+                'role' => 'admin',
+                'gender' => 'male',
+                'address' => 'Cairo, Egypt', 
+                'contact' => '987654321'
+            ]);
+            echo "Ahmed user created\n";
+        } else {
+            echo "Ahmed user already exists\n";
+        }
     }
 }
