@@ -32,6 +32,12 @@ COPY . .
 # Instalar dependencias de Composer
 RUN composer install --no-dev --optimize-autoloader
 
+# Ejecutar migraciones automáticamente
+RUN php artisan migrate --force
+
+# Ejecutar seeders automáticamente (creará los usuarios admin)
+RUN php artisan db:seed --force
+
 # Dar permisos
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
