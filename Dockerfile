@@ -25,12 +25,13 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Configurar permisos para .htaccess
-RUN echo '<Directory /var/www/html/public>\
-    Options Indexes FollowSymLinks\
-    AllowOverride All\
-    Require all granted\
-</Directory>' >> /etc/apache2/apache2.conf
+# Configurar permisos para .htaccess - FORMA CORRECTA
+RUN echo '<Directory /var/www/html/public>' > /etc/apache2/conf-available/laravel.conf
+RUN echo '    Options Indexes FollowSymLinks' >> /etc/apache2/conf-available/laravel.conf
+RUN echo '    AllowOverride All' >> /etc/apache2/conf-available/laravel.conf
+RUN echo '    Require all granted' >> /etc/apache2/conf-available/laravel.conf
+RUN echo '</Directory>' >> /etc/apache2/conf-available/laravel.conf
+RUN a2enconf laravel.conf
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
